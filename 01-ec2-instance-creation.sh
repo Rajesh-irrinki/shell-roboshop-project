@@ -12,7 +12,7 @@ do
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]'
     --query 'Instances[0].InstanceId' --output text)
     
-    if ( $insance == 'frontend' )
+    if ( $insance == 'frontend' ); then
         IP=$( 
             aws ec2 describe-instances \
             --filters "Name=instance-id,Values=$INSTANCE_ID" \
