@@ -9,15 +9,16 @@ do
     --image-id $AMI_ID \
     --instance-type t3.micro \
     --security-group-ids $SG_ID \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' \
-    --query 'Instances[0].InstanceId' --output text
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
+    --query 'Instances[0].InstanceId' \
+    --output text
     )
     
-    if ( $insance == 'frontend' ); then
+    if [ $insance == 'frontend' ]; then
         IP=$( 
             aws ec2 describe-instances \
             --filters "Name=instance-id,Values=$INSTANCE_ID" \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --query 'Reservations[].Instances[].PublicIpAddress' \
             --output text
             )
         echo "Public IP address: $IP"
@@ -25,7 +26,7 @@ do
         IP=$(
             aws ec2 describe-instances \
             --filters "Name=instance-id,Values=$INSTANCE_ID" \
-            --query 'Reservations[*].Instances[*].PrivateIpAddress' \
+            --query 'Reservations[].Instances[].PrivateIpAddress' \
             --output text
             )
         echo "Private IP address: $IP"
