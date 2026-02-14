@@ -17,9 +17,9 @@ mkdir -p $log_folder
 
 validate() {
     if [ $1 -eq 0 ]; then
-      echo -e "$2 is $G successful $N" &>> $log_file
+      echo -e "$2 is$G successful $N" | tee -a  $log_file
     else
-      echo -e "$2 is $R failed $N " &>> $log_file
+      echo -e "$2 is$R failed $N " | tee -a $log_file
       exit 1
     fi
 }
@@ -29,11 +29,12 @@ dnf list installed mongodb-org
 if [ $? -ne 0 ]; then
     cp mongo.repo /etc/yum.repos.d/mongo.repo
     validate $? "copying mongodb configuration to yum.repos.d"
-    echo "Mongodb installing......." &>> $log_file
+    echo "Mongodb installing......."
     dnf install mongodb-org -y &>> $log_file
     validate $? "Mongodb installing"
 else
-    echo -e "Mongodb is already installed $Y SKIPPING $N" &>> $log_file
+    echo -e "Mongodb is already installed $Y SKIPPING $N" | tee -a $log_file
+    exit 1
 fi
 
 echo "Enabling the mongodb service" &>> $log_file
