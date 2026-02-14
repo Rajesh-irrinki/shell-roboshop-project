@@ -5,7 +5,8 @@ SG_ID="sg-0238a21d11979a649"
 
 for instance in $@
 do
-    INSTANCE_ID=$( aws ec2 run-instances \
+  INSTANCE_ID=$( 
+    aws ec2 run-instances \
     --image-id $AMI_ID \
     --instance-type t3.micro \
     --security-group-ids $SG_ID \
@@ -14,7 +15,7 @@ do
     --output text
     )
     
-    if [ $insance == 'frontend' ]; then
+    if [ $instance == 'frontend' ]; then
         IP=$( 
             aws ec2 describe-instances \
             --filters "Name=instance-id,Values=$INSTANCE_ID" \
