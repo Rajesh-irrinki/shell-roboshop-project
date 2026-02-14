@@ -1,6 +1,6 @@
 #!/bin/bash
 
-AMI="ami-0220d79f3f480ecf5"
+AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-0238a21d11979a649"
 
 for instance in $@
