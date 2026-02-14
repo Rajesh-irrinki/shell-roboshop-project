@@ -2,6 +2,7 @@
 
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-0238a21d11979a649"
+HOSTED_ZONE_ID="Z04304691CJEXLOI5ZISX"
 DOMAIN="rajeshirrinki.online"
 
 for INSTANCE_NAME in $@
@@ -24,6 +25,7 @@ do
         --output text
         )
     echo "Public IP address: $IP"
+    RECORD_NAME=$DOMAIN
   else
     IP=$(
         aws ec2 describe-instances \
@@ -32,24 +34,29 @@ do
         --output text
         )
     echo "Private IP address: $IP"
+    RECORD_NAME=$INSTANCE_NAME.$DOMAIN
   fi
   
+  aws route53 change-resource-record-sets \
+  --hosted-zone-id $HOSTED_ZONE_ID \
+  --change-batch
   {
     "Changes": [
       {
+        "Comment": "record is created", 
         "Action": "UPSERT",
         "ResourceRecordSet": {
-        "Name": "$INSTANCE_NAME.$DOMAIN",
+        "Name": "'$RECORD_NAME'",
         "Type": "A",
         "TTL": 300,
         "ResourceRecords": [
           {
-            "Value": "$IP"
+            "Value": "'$IP'"
           }
         ]
       }
     }
       ]
-   }
-
+  }
+  echo "R53 Record is updated for $INSTANCE_NAME"
 done
