@@ -39,24 +39,23 @@ do
   
   aws route53 change-resource-record-sets \
   --hosted-zone-id $HOSTED_ZONE_ID \
-  --change-batch
-  {
-    "Changes": [
-      {
-        "Comment": "record is created", 
-        "Action": "UPSERT",
-        "ResourceRecordSet": {
-        "Name": "'$RECORD_NAME'",
-        "Type": "A",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "'$IP'"
-          }
-        ]
-      }
-    }
+  --change-batch {
+      "Changes": [
+        {
+            "Comment": "record is created", 
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+            "Name": "'$RECORD_NAME'",
+            "Type": "A",
+            "TTL": 300,
+            "ResourceRecords": [
+            {
+                "Value": "'$IP'"
+            }
+            ]
+                                  }
+        }
       ]
-  }
+   }
   echo "R53 Record is updated for $INSTANCE_NAME"
 done
