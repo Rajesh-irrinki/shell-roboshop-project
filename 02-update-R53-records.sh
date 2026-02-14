@@ -40,9 +40,9 @@ do
   aws route53 change-resource-record-sets \
   --hosted-zone-id $HOSTED_ZONE_ID \
   --change-batch '{
+      "Comment": "record is created", 
       "Changes": [
         {
-            "Comment": "record is created", 
             "Action": "UPSERT",
             "ResourceRecordSet": {
             "Name": "'$RECORD_NAME'",
