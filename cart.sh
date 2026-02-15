@@ -12,7 +12,7 @@ script_dir=$PWD
 if [ $user_id -ne 0 ]; then
     echo -e "$R Please run the script with root access $N" | tee -a $log_file
     exit 1
-else
+fi
 
 mkdir -p $log_folder
 
