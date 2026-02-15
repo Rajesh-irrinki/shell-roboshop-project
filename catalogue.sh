@@ -19,9 +19,9 @@ mkdir -p $log_folder
 
 validate() {
     if [ $1 -eq 0 ]; then
-      echo -e "$2 is$G SUCCESS $N" | tee -a $log_file
+      echo -e "$2 ...$G SUCCESS $N" | tee -a $log_file
     else
-      echo -e "$2 is$R FAILED $N" | tee -a $log_file
+      echo -e "$2 ...$R FAILED $N" | tee -a $log_file
       exit 1
     fi
 }
@@ -37,22 +37,22 @@ validate $? "Installing Nodejs"
 
 id roboshop &>> $log_file
 if [ $? -ne 0 ]; then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$log_file
     validate $? "System user creation"
 else
-    echo -e "Roboshop user is already exists..$Y SKIPPING $N"
+    echo -e "Roboshop user is already exists..$Y SKIPPING $N" | tee -a $log_file
 fi
 
-mkdir /app 
-validate $? "/app directory creation"
+mkdir -p /app 
+validate $? "app directory creation"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $log_file
 validate $? "Downloading catalogue code"
 
 cd /app
-validate $? "Moving to /app directory"
+validate $? "Moving to app directory"
 
-rm -rf /app/*
+rm -rf /app/*  &>>$log_file
 validate $? "Removing existing code"
 
 unzip /tmp/catalogue.zip &>> $log_file
@@ -77,14 +77,14 @@ validate $? "Mongo.repo copying to yum.repos.d"
 dnf install mongodb-mongosh -y &>> $log_file
 validate $? "Installing Mongo client"
 
-INDEX=$(mongosh --host $mongodb_server --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+INDEX=$(mongosh --host $mongodb_server --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")') &>> $log_file
 
 if [ $INDEX -le 0 ]; then
-    mongosh --host $mongodb_server </app/db/master-data.js
+    mongosh --host $mongodb_server </app/db/master-data.js &>> $log_file
     validate $? "Loading products"
 else
-    echo -e "Products already loaded ... $Y SKIPPING $N"
+    echo -e "Products already loaded ... $Y SKIPPING $N" | tee -a $log_file
 fi
 
-systemctl restart catalogue
-validate $? "Restarting catalogue"
+systemctl restart catalogue  &>> $log_file
+validate $? "Restarting catalogue" &>> $log_file

@@ -18,7 +18,7 @@ mkdir -p $log_folder
 
 validate () {
     if [ $1 -ne 0 ]; then
-        echo -e "$2 ...$R FAILER $N" | tee -a $log_file
+        echo -e "$2 ...$R FAILED $N" | tee -a $log_file
         exit 1
     else
         echo -e "$2 ... $G SUCCESS $N" | tee -a $log_file
@@ -31,10 +31,10 @@ validate $? "Disabling default Nodejs version"
 dnf module enable nodejs:20 -y &>>$log_file
 validate $? "Enabled Nodejs 20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$log_file
 validate $? "Installing Nodejs"  &>>$log_file
 
-id roboshop
+id roboshop &>>$log_file
 if [ $? -eq 0 ]; then
     echo -e "Roboshop user already exists ...$Y SKIPPING $N" | tee -a $log_file
 else
@@ -49,9 +49,9 @@ curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
 validate $? "Downloading user code"
 
 cd /app 
-validate $? "Moving to /app directory"
+validate $? "Moving to app directory"
 
-rm -r /app/* &>>$log_file
+rm -rf /app/* &>>$log_file
 validate $? "Removing existing code in app directory"
 
 unzip /tmp/user.zip &>>$log_file
