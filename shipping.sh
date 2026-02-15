@@ -19,10 +19,10 @@ mkdir -p $log_folder
 
 validate() {
     if [ $1 -ne 0 ]; then
-        echo "$2 ...$R FAILED$N"
+        echo "$2 ...$R FAILED $N"
         exit 1
     else
-        echo "$2 ...$G SUCCESS$N"
+        echo "$2 ...$G SUCCESS $N"
     fi
 }
 
@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$log_file
     validate $? "roboshop user creation"
 else
-    echo -e "Roboshop user already exists ...$Y SKIPPING$N" | tee -a $log_file
+    echo -e "Roboshop user already exists ...$Y SKIPPING $N" | tee -a $log_file
 fi
 
 mkdir -p /app
