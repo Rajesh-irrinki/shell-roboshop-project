@@ -17,7 +17,7 @@ fi
 mkdir -p $log_folder
 
 validate() {
-    if [ $1 ? -ne 0 ]; then
+    if [ $1 -ne 0 ]; then
         echo -e "$2 ...$R FAILED$N" | tee -a $log_file
         exit 1
     else
@@ -34,7 +34,7 @@ validate $? "Enabling Nodejs 20"
 dnf install nodejs -y &>>$log_file
 validate $? "Installing Nodejs"
 
-id roboshop
+id roboshop &>>$log_file
 if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$log_file
     validate $? "Roboshop user creation"
