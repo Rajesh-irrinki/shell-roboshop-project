@@ -17,6 +17,15 @@ fi
 
 mkdir -p $log_folder
 
+validate() {
+    if [ $1 -ne 0 ]; then
+        echo "$2 ...$R FAILED$N"
+        exit 1
+    else
+        echo "$2 ...$G SUCCESS$N"
+    fi
+}
+
 dnf install maven -y &>>$log_file
 validate $? "Installing maven"
 
