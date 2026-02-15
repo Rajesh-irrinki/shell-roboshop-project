@@ -81,10 +81,10 @@ INDEX=$(mongosh --host $mongodb_server --quiet  --eval 'db.getMongo().getDBNames
 
 if [ $INDEX -le 0 ]; then
     mongosh --host $mongodb_server </app/db/master-data.js
-    VALIDATE $? "Loading products"
+    validate $? "Loading products"
 else
     echo -e "Products already loaded ... $Y SKIPPING $N"
 fi
 
 systemctl restart catalogue
-VALIDATE $? "Restarting catalogue"
+validate $? "Restarting catalogue"
