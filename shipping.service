@@ -5,7 +5,7 @@ Description=Shipping Service
 User=roboshop
 // highlight-start
 Environment=CART_ENDPOINT=cart.rajeshirrinki.online:8080
-Environment=DB_HOST=mysql-server.rajeshirrinki.online
+Environment=DB_HOST=mysql.rajeshirrinki.online
 // highlight-end
 ExecStart=/bin/java -jar /app/shipping.jar
 SyslogIdentifier=shipping
