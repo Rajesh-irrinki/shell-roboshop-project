@@ -24,7 +24,7 @@ validate() {
     fi 
 }
 
-cp rabbitmq /etc/yum.repos.d/rabbitmq.repo &>>$log_file
+cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>>$log_file
 validate $? "Created Systemctl service"
 
 dnf install rabbitmq-server -y &>>$log_file
