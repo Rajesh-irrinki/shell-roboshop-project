@@ -51,7 +51,7 @@ validate $? "Downloading cart code"
 cd /app 
 validate $? "Moving to app directory"
 
-rm -r /app/*
+rm -rf /app/*
 validate $? "Removing existing code"
 
 unzip /tmp/cart.zip &>>$log_file
