@@ -49,6 +49,9 @@ validate $? "Moving to nginx configuration directory"
 unzip /tmp/frontend.zip &>>$log_file
 validate $? "Unzipping the Frontend code"
 
+rm -rf /etc/nginx/nginx.conf &>>$log_file
+validate $? "Removing Nginx configuration"
+
 cp $script_dir /etc/nginx/nginx.conf &>>$log_file
 validate $? "Reverse Proxy config creation"
 
